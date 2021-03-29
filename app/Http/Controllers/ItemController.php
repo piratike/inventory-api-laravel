@@ -160,14 +160,32 @@ class ItemController extends Controller
      *
      * @var \Illuminate\Http\Response
      */
-    public function getItems(Request $request, $store_name)
+    public function getItems(Request $request)
     {
 
         try {
 
-            $store_id = StoreController::getStoreId($store_name);
+            $queries = [];
 
-            return RequestController::returnSuccess(Item::where('store', '=', $store_id)->get(), 'Data given.');
+            if(!is_null($request->input('store_name')))
+                array_push($queries, ['store', '=', StoreController::getStoreId($request->input('store_name'))]);
+
+            if(!is_null($request->input('category_name')))
+                array_push($queries, ['category', '=', CategoryController::getCategoryId($request->input('category_name'))]);
+
+            if(!is_null($request->input('min_cuantity')))
+                array_push($queries, ['cuantity', '>=', $request->input('min_cuantity')]);
+
+            if(!is_null($request->input('max_cuantity')))
+                array_push($queries, ['cuantity', '<=', $request->input('max_cuantity')]);
+
+            if(!is_null($request->input('description_like')))
+                array_push($queries, ['description', 'like', "%{$request->input('description_like')}%"]);
+
+            if(!is_null($request->input('name_like')))
+                array_push($queries, ['name', 'like', "%{$request->input('name_like')}%"]);
+
+            return RequestController::returnSuccess(Item::where($queries)->get(), 'Data given.');
 
         } catch (Exception $e) {
 

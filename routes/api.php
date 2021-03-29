@@ -27,7 +27,7 @@ Route::post('/new-category/{category_name}', [CategoryController::class, 'create
 Route::put('/edit-category/{category_name}/{new_category_name}', [CategoryController::class, 'editCategory']);
 Route::delete('/delete-category/{category_name}', [CategoryController::class, 'deleteCategory']);
 
-Route::get('/get-items/{store_name}', [ItemController::class, 'getItems']);
+Route::get('/get-items', [ItemController::class, 'getItems']);
 Route::post('/new-item', [ItemController::class, 'createItem']);
 Route::put('/edit-item', [ItemController::class, 'editItem']);
 Route::delete('/delete-item', [ItemController::class, 'deleteItem']);
