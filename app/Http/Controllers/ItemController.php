@@ -156,7 +156,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Get Item or Items. // FALTA AÑADIR FILTROS
+     * Get Item or Items.
      *
      * @var \Illuminate\Http\Response
      */
