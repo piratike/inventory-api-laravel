@@ -21,23 +21,34 @@ class UserController extends Controller
         if(is_null($request->input('password')))
             return RequestController::returnFail('Signup error.', 'You have to give a password.', 500);
 
+        $user = User::where('email', '=', $request->input('email'))->first();
+
+        if(!is_null($user))
+            return RequestController::returnSuccess($request->input('email'), 'Email already in use.');
+
         User::create([
             'name' => $request->input('username'),
-            'email' =>  $request->input('username'),
+            'email' =>  $request->input('email'),
             'password' => Hash::make($request->input('password'))
         ]);
 
-        return RequestController::returnSuccess(Hash::make($request->input('password')), 'Registered successfully.');
+        return RequestController::returnSuccess($request->input('username'), 'Registered successfully.');
 
     }
 
     function login(Request $request)
     {
 
+        if(is_null($request->input('email')))
+            return RequestController::returnFail('Signup error.', 'You have to give an email.', 500);
+
+        if(is_null($request->input('password')))
+            return RequestController::returnFail('Signup error.', 'You have to give a password.', 500);
+
         $user = User::where('email', '=', $request->input('email'))->first();
 
-        if(!$user || !Hash::check($request->input('password'), $user->password))
-            return RequestController::returnFail('Login error.', 'The credentials do not match our records.', 500);
+        if(is_null($user) || !Hash::check($request->input('password'), $user->password))
+            return RequestController::returnFail('Login error.', $request->input('email'), 500); //'The credentials do not match our records.'
 
         $token = $user->createToken('inventory-token')->plainTextToken;
 
