@@ -58,11 +58,11 @@ class CategoryController extends RequestController
             $category = Category::where('id', '=', $category_id)->first();
 
             if(is_null($category))
-                return RequestController::returnSuccess($category_id, 'The Category does not exist.');
+                return RequestController::returnSuccess($category->name, 'The Category does not exist.');
 
             $category->update(['name' => $new_category_name]);
 
-            return RequestController::returnSuccess($new_category_name, 'The Category was updated successfully.');
+            return RequestController::returnSuccess($category->name, 'The Category was updated successfully.');
 
         } catch (Exception $e) {
 
@@ -88,11 +88,11 @@ class CategoryController extends RequestController
             $category = Category::where('id', '=', $category_id)->first();
 
             if(is_null($category))
-                return RequestController::returnSuccess($category_id, 'The Category does not exist.');
+                return RequestController::returnSuccess($category->name, 'The Category does not exist.');
 
             $category->delete();
 
-            return RequestController::returnSuccess($category_id, 'The Category was deleted successfully.');
+            return RequestController::returnSuccess($category->name, 'The Category was deleted successfully.');
 
         } catch (Exception $e) {
 
