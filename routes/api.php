@@ -21,9 +21,9 @@ use App\Http\Controllers\UserController;
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/get-stores', [StoreController::class, 'getStores']);
-    Route::post('/new-store/{store_name}', [StoreController::class, 'createStore']);
-    Route::put('/edit-store/{store_name}/{new_store_name}', [StoreController::class, 'editStore']);
-    Route::delete('/delete-store/{store_name}', [StoreController::class, 'deleteStore']);
+    Route::post('/new-store', [StoreController::class, 'createStore']);
+    Route::put('/edit-store', [StoreController::class, 'editStore']);
+    Route::delete('/delete-store', [StoreController::class, 'deleteStore']);
 
     Route::get('/get-categories', [CategoryController::class, 'getCategories']);
     Route::post('/new-category/{category_name}', [CategoryController::class, 'createCategory']);

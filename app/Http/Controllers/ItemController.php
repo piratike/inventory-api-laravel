@@ -138,7 +138,8 @@ class ItemController extends Controller
             if(is_null($request->input('id')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide an ID of the Item.', 500);
 
-            $item = Item::where('id', '=', $request->input('id'))->first();
+            $id = $request->input('id');
+            $item = Item::where('id', '=', $id)->first();
 
             if(is_null($item))
                 return RequestController::returnSuccess('No Item', 'The Item does not exist.');
