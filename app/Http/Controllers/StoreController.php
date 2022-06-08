@@ -18,19 +18,19 @@ class StoreController extends RequestController
 
         try {
 
-            if(is_null($request->input('store_name')))
+            if(is_null($request->input('store->name')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
 
-            $store = Store::where('name', '=', $store_name)->first();
+            $store = Store::where('name', '=', $store->name)->first();
 
             if(!is_null($store))
-                return RequestController::returnSuccess($store_name, 'The Store already exist.');
+                return RequestController::returnSuccess($store->name, 'The Store already exist.');
 
             Store::create([
-                'name' => $store_name
+                'name' => $store->name
             ]);
 
-            return RequestController::returnSuccess($store_name, 'The Store was added successfully.');
+            return RequestController::returnSuccess($store->name, 'The Store was added successfully.');
 
         } catch (Exception $e) {
 
@@ -45,27 +45,23 @@ class StoreController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function editStore(Request $request)
+    public function editStore(Request $request, $store_id)
     {
 
         try {
 
-            if(is_null($request->input('store_name')))
-                return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
-
-            if(is_null($request->input('new_store_name')))
+            if(is_null($request->input('new_store->name')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a new store name.')
 
-            $store_name = $request->input('store_name');
-            $new_store_name = $request->input('new_store_name');
-            $store = Store::where('name', '=', $store_name)->first();
+            $new_store->name = $request->input('new_store->name');
+            $store = Store::where('id', '=', $store_id)->first();
 
             if(is_null($store))
-                return RequestController::returnSuccess($store_name, 'The Store does not exist.');
+                return RequestController::returnSuccess($store->name, 'The Store does not exist.');
 
-            $store->update(['name' => $new_store_name]);
+            $store->update(['name' => $new_store->name]);
 
-            return RequestController::returnSuccess($new_store_name, 'The Store was updated successfully.');
+            return RequestController::returnSuccess($store->name, 'The Store was updated successfully.');
 
         } catch (Exception $e) {
 
@@ -80,23 +76,19 @@ class StoreController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function deleteStore(Request $request)
+    public function deleteStore(Request $request, $store_id)
     {
 
         try {
 
-            if(is_null($request->input('store_name')))
-                return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
-
-            $store_name = $request->input('store_name');
-            $store = Store::where('name', '=', $store_name)->first();
+            $store = Store::where('id', '=', $store_id)->first();
 
             if(is_null($store))
-                return RequestController::returnSuccess($store_name, 'The Store does not exist.');
+                return RequestController::returnSuccess($store->name, 'The Store does not exist.');
 
             $store->delete();
 
-            return RequestController::returnSuccess($store_name, 'The Store was deleted successfully.');
+            return RequestController::returnSuccess($store->name, 'The Store was deleted successfully.');
 
         } catch (Exception $e) {
 
@@ -129,14 +121,14 @@ class StoreController extends RequestController
     /**
      * Get Store ID.
      *
-     * @param integer $store_name
+     * @param integer $store->name
      */
-    public static function getStoreId($store_name)
+    public static function getStoreId($store->name)
     {
 
         try {
 
-            $id = Store::where('name', '=', $store_name)->first();
+            $id = Store::where('name', '=', $store->name)->first();
 
             if(is_null($id))
                 return False;

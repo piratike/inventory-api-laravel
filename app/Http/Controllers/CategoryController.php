@@ -46,27 +46,23 @@ class CategoryController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function editCategory(Request $request)
+    public function editCategory(Request $request, $category_id)
     {
 
         try {
 
-            if(is_null($request->input('category_name')))
-                return RequestController::returnFail('Internal Server error.', 'Must provide a category name.', 500);
-
             if(is_null($request->input('new_category_name')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a new category name.', 500);
 
-            $category_name = $request->input('category_name');
             $new_category_name = $request->input('new_category_name');
-            $category = Category::where('name', '=', $category_name)->first();
+            $category = Category::where('id', '=', $category_id)->first();
 
             if(is_null($category))
-                return RequestController::returnSuccess($category_name, 'The Category does not exist.');
+                return RequestController::returnSuccess($category->name, 'The Category does not exist.');
 
             $category->update(['name' => $new_category_name]);
 
-            return RequestController::returnSuccess($new_category_name, 'The Category was updated successfully.');
+            return RequestController::returnSuccess($category->name, 'The Category was updated successfully.');
 
         } catch (Exception $e) {
 
@@ -81,7 +77,7 @@ class CategoryController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function deleteCategory(Request $request)
+    public function deleteCategory(Request $request, $category_id)
     {
 
         try {
@@ -89,15 +85,14 @@ class CategoryController extends RequestController
             if(is_null($request->input('category_name')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a category name.', 500);
 
-            $category_name = $request->input('category_name');
-            $category = Category::where('name', '=', $category_name)->first();
+            $category = Category::where('id', '=', $category_id)->first();
 
             if(is_null($category))
-                return RequestController::returnSuccess($category_name, 'The Category does not exist.');
+                return RequestController::returnSuccess($category->name, 'The Category does not exist.');
 
             $category->delete();
 
-            return RequestController::returnSuccess($category_name, 'The Category was deleted successfully.');
+            return RequestController::returnSuccess($category->name, 'The Category was deleted successfully.');
 
         } catch (Exception $e) {
 

@@ -73,13 +73,10 @@ class ItemController extends Controller
      *
      * @var \Illuminate\Http\Response
      */
-    public function editItem(Request $request)
+    public function editItem(Request $request, $item_id)
     {
 
         try {
-
-            if(is_null($request->input('id')))
-                return RequestController::returnFail('Internal Server error.', 'Must provide an ID of the Item.', 500);
 
             if(is_null($request->input('name')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a Name to the Item.', 500);
@@ -90,19 +87,19 @@ class ItemController extends Controller
             if(is_null($request->input('cuantity')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a Cuantity to the Item.', 500);
 
-            if(is_null($request->input('store_name')))
+            if(is_null($request->input('store_id')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a Store to the Item.', 500);
 
-            if(is_null($request->input('category_name')))
+            if(is_null($request->input('category_id')))
                 return RequestController::returnFail('Internal Server error.', 'Must provide a Category to the Item.', 500);
 
-            $store_id = StoreController::getStoreId($request->input('store_name'));
-            $category_id = CategoryController::getCategoryId($request->input('category_name'));
+            $store_id = StoreController::getStoreId($request->input('store_id'));
+            $category_id = CategoryController::getCategoryId($request->input('category_id'));
 
             if(!$store_id || !$category_id)
-                return RequestController::returnFail('Internal Server error.', 'The Item does not have a Store or a Category.', 500);
+                return RequestController::returnFail('Internal Server error.', 'The Item does not have a valid Store or Category.', 500);
 
-            $item = Item::where('id', '=', $request->input('id'))->first();
+            $item = Item::where('id', '=', $item_id)->first();
 
             if(is_null($item))
                 return RequestController::returnSuccess('No Item', 'The Item already exist.');
@@ -130,16 +127,12 @@ class ItemController extends Controller
      *
      * @var \Illuminate\Http\Response
      */
-    public function deleteItem(Request $request)
+    public function deleteItem(Request $request, $item_id)
     {
 
         try {
 
-            if(is_null($request->input('id')))
-                return RequestController::returnFail('Internal Server error.', 'Must provide an ID of the Item.', 500);
-
-            $id = $request->input('id');
-            $item = Item::where('id', '=', $id)->first();
+            $item = Item::where('id', '=', $item_id)->first();
 
             if(is_null($item))
                 return RequestController::returnSuccess('No Item', 'The Item does not exist.');

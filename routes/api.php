@@ -20,20 +20,20 @@ use App\Http\Controllers\UserController;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
-    Route::get('/get-stores', [StoreController::class, 'getStores']);
-    Route::post('/new-store', [StoreController::class, 'createStore']);
-    Route::put('/edit-store', [StoreController::class, 'editStore']);
-    Route::delete('/delete-store', [StoreController::class, 'deleteStore']);
+    Route::get('/stores', [StoreController::class, 'getStores']);
+    Route::post('/stores', [StoreController::class, 'createStore']);
+    Route::put('/stores/{store_id}', [StoreController::class, 'editStore']);
+    Route::delete('/stores/{store_id}', [StoreController::class, 'deleteStore']);
 
-    Route::get('/get-categories', [CategoryController::class, 'getCategories']);
-    Route::post('/new-category', [CategoryController::class, 'createCategory']);
-    Route::put('/edit-category', [CategoryController::class, 'editCategory']);
-    Route::delete('/delete-category', [CategoryController::class, 'deleteCategory']);
+    Route::get('/categories', [CategoryController::class, 'getCategories']);
+    Route::post('/categories', [CategoryController::class, 'createCategory']);
+    Route::put('/categories/{category_id}', [CategoryController::class, 'editCategory']);
+    Route::delete('/categories/{category_id}', [CategoryController::class, 'deleteCategory']);
 
-    Route::get('/get-items', [ItemController::class, 'getItems']);
-    Route::post('/new-item', [ItemController::class, 'createItem']);
-    Route::put('/edit-item', [ItemController::class, 'editItem']);
-    Route::delete('/delete-item', [ItemController::class, 'deleteItem']);
+    Route::get('/items', [ItemController::class, 'getItems']);
+    Route::post('/items', [ItemController::class, 'createItem']);
+    Route::put('/items/{item_id}', [ItemController::class, 'editItem']);
+    Route::delete('/items/{item_id}', [ItemController::class, 'deleteItem']);
 
 });
 
