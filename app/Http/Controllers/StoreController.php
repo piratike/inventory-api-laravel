@@ -13,10 +13,13 @@ class StoreController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function createStore(Request $request, $store_name)
+    public function createStore(Request $request)
     {
 
         try {
+
+            if(is_null($request->input('store_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
 
             $store = Store::where('name', '=', $store_name)->first();
 
@@ -42,11 +45,19 @@ class StoreController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function editStore(Request $request, $store_name, $new_store_name)
+    public function editStore(Request $request)
     {
 
         try {
 
+            if(is_null($request->input('store_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
+
+            if(is_null($request->input('new_store_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a new store name.')
+
+            $store_name = $request->input('store_name');
+            $new_store_name = $request->input('new_store_name');
             $store = Store::where('name', '=', $store_name)->first();
 
             if(is_null($store))
@@ -69,11 +80,15 @@ class StoreController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function deleteStore(Request $request, $store_name)
+    public function deleteStore(Request $request)
     {
 
         try {
 
+            if(is_null($request->input('store_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a store name.')
+
+            $store_name = $request->input('store_name');
             $store = Store::where('name', '=', $store_name)->first();
 
             if(is_null($store))

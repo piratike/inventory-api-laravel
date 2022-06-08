@@ -13,11 +13,15 @@ class CategoryController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function createCategory(Request $request, $category_name)
+    public function createCategory(Request $request)
     {
 
         try {
 
+            if(is_null($request->input('category_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a category name.', 500);
+
+            $category_name = $request->input('category_name');
             $category = Category::where('name', '=', $category_name)->first();
 
             if(!is_null($category))
@@ -42,11 +46,19 @@ class CategoryController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function editCategory(Request $request, $category_name, $new_category_name)
+    public function editCategory(Request $request)
     {
 
         try {
 
+            if(is_null($request->input('category_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a category name.', 500);
+
+            if(is_null($request->input('new_category_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a new category name.', 500);
+
+            $category_name = $request->input('category_name');
+            $new_category_name = $request->input('new_category_name');
             $category = Category::where('name', '=', $category_name)->first();
 
             if(is_null($category))
@@ -69,11 +81,15 @@ class CategoryController extends RequestController
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function deleteCategory(Request $request, $category_name)
+    public function deleteCategory(Request $request)
     {
 
         try {
 
+            if(is_null($request->input('category_name')))
+                return RequestController::returnFail('Internal Server error.', 'Must provide a category name.', 500);
+
+            $category_name = $request->input('category_name');
             $category = Category::where('name', '=', $category_name)->first();
 
             if(is_null($category))
